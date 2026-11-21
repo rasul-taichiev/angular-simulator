@@ -1,4 +1,3 @@
-
 @use './fonts/nunito-sans/fonts';
 @use './normalize';
 @use './button.scss';
@@ -13,9 +12,10 @@
 }
 
 :root {
-    --primary-color: #18121E80;
-    --secondary-color: #1A3E3E;
-    --white-color: #FDFDFD;
+    --primary-color: #18121e80;
+    --secondary-color: #1a3e3e;
+    --white-color: #fdfdfd;
+    --yellow-color: #f2be22;
 }
 
 .fs-14 {
@@ -34,6 +34,14 @@
     font-size: 20px;
 }
 
+.fs-24 {
+    font-size: 20px;
+}
+
+.min-bold {
+    font-weight: 400;
+}
+
 .bold {
     font-weight: 700;
 }
@@ -48,11 +56,25 @@
 }
 
 .white-text a {
-    color:  var(--white-color) ;
+    color: var(--white-color);
 }
 
 .white-text {
-   color:  var(--white-color) ; 
+    color: var(--white-color);
 }
 
+.black-text {
+    color: #18121e;
+}
 
+.title-up-destription {
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0%;
+    color: var(--yellow-color);
+}
+
+.text-icon {
+    width: 50px;
+    height: 50px;
+}

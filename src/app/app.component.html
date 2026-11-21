@@ -1,58 +1,217 @@
-<header class="header">
-    <div class="super-header">
-        <div class="container super-header-container">
-            <div class="company-menu">
-                <div class="company-logo">
-                    <img src="/images/logo-icon.png" alt="logotype" class="logo-icon">
-                </div>
+<div class="preloader-overlay" *ngIf="isLoading">
+    <img src="/images/load-icon.png" alt="Загрузка..." class="loader-icon" />
+</div>
 
-                <div class="company-nav">
-                    <nav class="nav-wrapper fs-18 semi-bold white-text">
-                        <a href="">Главная</a>
-                        <a href="">Про гида</a>
-                        <a href="">Программа тура</a>
-                        <a href="">Стоимость</a>
-                        <a href="">Блог</a>
-                        <a href="">Контакты</a>
-                    </nav>
+<ng-container *ngIf="!isLoading">
+    <header class="header">
+        <div class="super-header">
+            <div class="container super-header-container">
+                <div class="company-menu">
+                    <div class="company-logo">
+                        <img src="/images/logo-icon.png" alt="logotype" class="logo-icon" />
+                    </div>
+
+                    <div class="company-nav">
+                        <nav class="nav-wrapper fs-18 semi-bold white-text">
+                            <a href="">Главная</a>
+                            <a href="">Про гида</a>
+                            <a href="">Программа тура</a>
+                            <a href="">Стоимость</a>
+                            <a href="">Блог</a>
+                            <a href="">Контакты</a>
+                        </nav>
+                    </div>
+                    <div class="consultation-box">
+                        <button class="redirect-to-consultation-btn primary-button">
+                            Консультация
+                        </button>
+                        <button
+                            type="button"
+                            class="timer-btn primary-button"
+                            (click)="toggleTimer()"
+                        >
+                            {{ isTimerVisible ? 'Скрыть таймер' : 'Показать таймер' }}
+                        </button>
+                        <span *ngIf="isTimerVisible" class="header-timer white-text fs-14">{{
+                            currentDateTime
+                        }}</span>
+                    </div>
+                    <div class="header-counter">
+                        <button type="button" (click)="increment()">+</button>
+                        <span>{{ clickCount }}</span>
+                        <button type="button" (click)="decrement()" [disabled]="clickCount === 0">
+                            -
+                        </button>
+                    </div>
                 </div>
-                <button class="redirect-to-consultation-btn primary-button">Консультация</button>
+            </div>
+        </div>
+    </header>
+    <section class="main-info">
+        <div class="banner"></div>
+        <div class="title-wrapper">
+            <div class="title">Насладись прогулкой в горах с командой единомышленников</div>
+        </div>
+        <div class="blur">
+            <div class="search-form">
+                <div class="filter-field">
+                    <select
+                        [(ngModel)]="selectedLocation"
+                        name="choose-location-tour"
+                        class="filter-select white-text bold fs-16"
+                    >
+                        <option value="" disabled selected hidden>Локация для тура</option>
+                        <option value="caucasus">Горы Кавказа</option>
+                        <option value="altai">Алтай</option>
+                    </select>
+                    <label for="choose-location-tour" class="white-text fs-14 tour-prompt"
+                        >выберите из списка</label
+                    >
+                </div>
+                <div class="filter-field">
+                    <select
+                        [(ngModel)]="selectedDate"
+                        name="tour-date"
+                        class="filter-select select-date white-text bold fs-16"
+                    >
+                        <option value="" disabled selected hidden>Дата похода</option>
+                        <option value="2026-06-01">1 июня 2026</option>
+                        <option value="2026-06-15">15 июня 2026</option>
+                    </select>
+                    <label for="tour-date" class="white-text fs-14 tour-prompt">укажите дату</label>
+                </div>
+                <div class="filter-field">
+                    <!-- Добавили класс filter-input, чтобы управлять стилями отдельно, если нужно -->
+                    <input
+                        [ngModel]="participantsCount"
+                        (ngModelChange)="participantsCount = $event"
+                        type="number"
+                        name="participants"
+                        id="participantsInput"
+                        class="filter-select filter-input white-text bold fs-16"
+                        min="4"
+                        placeholder="Участники"
+                    />
+
+                    <!-- Исправили id на participantsInput, чтобы метка и инпут были связаны -->
+                    <label for="participantsInput" class="white-text fs-14 tour-prompt"
+                        >минимум 4 человека</label
+                    >
+                </div>
+                <button
+                    type="button"
+                    [disabled]="isFormInvalid"
+                    (click)="onSearch($event)"
+                    class="big-button find-program-btn white-text fs-16 bold"
+                    id="search-btn"
+                >
+                    Найти программу
+                </button>
+            </div>
+        </div>
+        <div class="live-input-wrapper">
+            <input
+                type="text"
+                class="live-input-field filter-select white-text bold fs-16"
+                placeholder="Живой инпут"
+                maxlength="15"
+                [(ngModel)]="liveInputText"
+            />
+            <span class="live-input-preview">{{ liveInputText || 'Введенный текст' }}</span>
+        </div>
+    </section>
+    <div class="background-mountain-tour-info">
+        <div class="mountain-tour-info">
+            <div class="images-info">
+                <img
+                    src="/images/mountain-view.png"
+                    alt="mountain view"
+                    class="mountain-view-image first-mountain-view-image"
+                />
+                <div class="second-mountain-view-image-container">
+                    <img
+                        src="/images/mountain-view2.png"
+                        alt="mountain view2"
+                        class="mountain-view-image second-mountain-view-image"
+                    />
+                    <button class="play-button">
+                        <svg viewBox="0 0 24 24">
+                            <polygon points="6,4 20,12 6,20" fill="#000000" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="tour-info">
+                <h2 class="title-up-destription">о нашем походе</h2>
+                <h1>Исследуйте все горные массивы мира вместе с нами</h1>
+                <span class="black-text fs-18 title-destription"
+                    >Его корни уходят в один фрагмент классической латыни 45 года н.э., то есть
+                    более двух тысячелетий назад. Ричард МакКлинток, профессор латыни из колледжа
+                    Hampden-Sydney, штат Вирджиния, взял одно из самых странных слов в Lorem Ipsum,
+                    "consectetur"и занялся его поисками в классической латинской литературе.</span
+                >
+                <button class="big-button tour-program-btn white-text fs-16 bold">
+                    Программа тура
+                </button>
             </div>
         </div>
     </div>
-</header>
-<section class="main-info">
-    <div class="banner"></div>
-    <div class="title-wrapper">
-        <div class="title">Насладись прогулкой в горах с командой единомышленников</div>
-    </div>
-    <div class="blur">
-        <div class="search-form">
-            <div class="filter-field">
-                <select name="choose-location-tour" class="filter-select white-text bold fs-16">
-                    <option value="">Локация для тура</option>
-                </select>
-                <label for="choose-location-tour" class="white-text fs-14 tour-prompt">выберите из списка</label>
+
+    <div class="background-program-info">
+        <div class="best-program-info">
+            <div class="title-program-info">
+                <h2 class="title-up-destription">наше предложение</h2>
+                <h1>Лучшие программы для тебя</h1>
             </div>
-            <div class="filter-field">
-                <select name="tour-date" class="filter-select select-date white-text bold fs-16">
-                    <!-- Первый вариант — пустой или со значением по умолчанию, который служит текстом -->
-                    <option value="" disabled selected hidden>Дата похода</option>
-                    <option value="2026-06-01">1 июня 2026</option>
-                    <option value="2026-06-15">15 июня 2026</option>
-                </select>
-                <label for="tour-date" class="white-text fs-14 tour-prompt">укажите дату</label>
+            <span class="black-text fs-18 title-description"
+                >Его корни уходят в один фрагмент классической латыни 45 года н.э., то есть более
+                двух тысячелетий назад. Ричард МакКлинток, профессор латыни из колледжа.
+            </span>
+
+            <div class="features-list">
+                <div class="content-box">
+                    <img src="/images/experienced-gid-icon.png" class="text-icon" alt="" />
+                    <div class="text-content">
+                        <span class="fs-18 bold">Опытный гид</span>
+                        <span class="fs-14 text-description">
+                            Для современного мира базовый вектор развития предполагает независимые
+                            способы реализации соответствующих условий активизации.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="content-box">
+                    <img src="/images/nice-safety-icon.png" class="text-icon" alt="" />
+                    <div class="text-content">
+                        <span class="fs-18 bold">Безопасный поход</span>
+                        <span class="fs-14 text-description">
+                            Для современного мира базовый вектор развития предполагает независимые
+                            способы реализации соответствующих условий активизации.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="content-box">
+                    <img src="/images/experienced-gid-icon.png" class="text-icon" alt="" />
+                    <div class="text-content">
+                        <span class="fs-18 bold">Лояльные цены</span>
+                        <span class="fs-14 text-description">
+                            Для современного мира базовый вектор развития предполагает независимые
+                            способы реализации соответствующих условий активизации.
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="filter-field">
-                <select name="participants" class="filter-select white-text bold fs-16">
-                    <option value="">Участники</option>
-                </select>
-                <label for="participants" class="white-text fs-14 tour-prompt">выберите из списка</label>
-            </div>
-            <button class="big-button find-program-btn white-text fs-16 bold">
-                Найти программу
+
+            <button class="big-button program-price-btn white-text fs-16 bold">
+                Стоимость программ
             </button>
         </div>
+        <div class="tour-program-image">
+            <img src="/images/tour-image.jpg" alt="" class="tour-image tour-image-1" />
+            <img src="/images/tour-image2.jpg" alt="" class="tour-image tour-image-2" />
+            <img src="/images/tour-image3.jpg" alt="" class="tour-image tour-image-3" />
+            <img src="/images/tour-image4.jpg" alt="" class="tour-image tour-image-4" />
+        </div>
     </div>
-</section>
-
+</ng-container>

@@ -1,7 +1,33 @@
+.preloader-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background-color: var(--primary-color, #1e242b);
+}
+
+.loader-icon {
+    width: 64px;
+    height: 64px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .header {
     position: fixed;
     width: 100%;
     color: var(--white-color);
+    z-index: 10;
     .super-header {
         background-color: var(--primary-color);
         height: 120px;
@@ -20,17 +46,30 @@
         width: 100%;
         .company-logo {
             .logo-icon {
-            width: 140px;
-            height: 60px;
+                width: 140px;
+                height: 60px;
             }
         }
         .nav-wrapper a {
             text-decoration: none;
         }
-        .redirect-to-consultation-btn {
-            width: 158px;
+        .consultation-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center; // или flex-end, если нужно выровнять по правому краю кнопки
+            gap: 10px;
+            .redirect-to-consultation-btn {
+                width: 158px;
+            }
+            .timer-btn {
+                width: 158px;
+            }
         }
     }
+}
+
+.nav-wrapper a {
+    text-decoration: none;
 }
 
 .main-info {
@@ -57,47 +96,80 @@
         height: 150px;
         margin-bottom: 41px;
         margin-right: 90px;
-            .title {
+        .title {
             font-weight: 400;
             line-height: 150%;
             text-transform: uppercase;
             font-size: 50px;
             color: var(--white-color);
             text-align: left;
-            }
-    }
-    .blur {
-    width: 1180px;
-    height: 160px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    /* 1. Полупрозрачный фон (белый с прозрачностью 15%) */
-    background: rgba(255, 255, 255, 0.2);
-
-    /* 2. Само размытие фона, который находится под этим элементом */
-    backdrop-filter: blur(6px);
-
-    /* 4. Дополнительно: полупрозрачная рамка и скругление для красоты */
-    border-radius: 10px;
-
-    .search-form {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 1090px;
-      height: 81px;
-      margin: 0 auto;
-        .filter-field {
-            width: 270px;
-            flex-direction: column;
-            display: flex;
-            gap: 8px;
         }
     }
-  }
+    .blur {
+        width: 1180px;
+        height: 160px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        /* 1. Полупрозрачный фон (белый с прозрачностью 15%) */
+        background: rgba(255, 255, 255, 0.2);
+
+        /* 2. Само размытие фона, который находится под этим элементом */
+        backdrop-filter: blur(6px);
+
+        /* 4. Дополнительно: полупрозрачная рамка и скругление для красоты */
+        border-radius: 10px;
+
+        .search-form {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 1090px;
+            height: 81px;
+            margin: 0 auto;
+            .filter-field {
+                width: 270px;
+                flex-direction: column;
+                display: flex;
+                gap: 8px;
+            }
+        }
+    }
+    .live-input-wrapper {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        align-self: flex-start;
+        margin-left: 380px;
+        gap: 30px;
+        width: 600px;
+        height: 52px;
+        .live-input-field {
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            flex-shrink: 0;
+            width: 270px;
+            height: 52px;
+            box-sizing: border-box;
+            &::placeholder {
+                color: var(--white-color);
+                opacity: 1;
+            }
+            background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 18px 18px;
+        }
+        .live-input-preview {
+            overflow-wrap: anywhere; // переносит длинные слова без пробелов, чтобы не уезжали вправо
+            color: var(--white-color);
+        }
+    }
 }
 
 .filter-select {
@@ -110,6 +182,43 @@
     padding-right: 40px;
     padding-left: 16px;
     background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L13 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center; /* Отступ иконки от правого края */
+    background-size: 14px 8px;
+    text-indent: 6px;
+    option {
+        background-color: #2b3a42; // Сделай фон выпадающего списка темным (под цвет твоего блока)
+        color: #ffffff; // Белый текст
+        padding: 10px;
+    }
+}
+
+.filter-input {
+    // Убираем стандартные стрелочки управления числом у input[type="number"]
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    width: 270px;
+    height: 52px;
+    box-sizing: border-box;
+    // Цвет плейсхолдера (текста-подсказки), чтобы он был белым
+    &::placeholder {
+        color: #ffffff;
+        opacity: 1;
+    }
+}
+
+.select-date {
+    background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 18px 18px;
 }
 .tour-prompt {
     font-weight: 400;
@@ -124,4 +233,194 @@
     line-height: 20px;
     border: none;
     font-family: 'Nunito Sans', sans-serif;
+}
+
+.background-mountain-tour-info {
+    width: 100%;
+    height: 771px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .mountain-tour-info {
+        width: 1180px;
+        height: 526px;
+        display: flex;
+        flex-direction: row;
+        gap: 120px;
+
+        margin: 0 auto;
+
+        .images-info {
+            width: 480px;
+            height: 526px;
+            position: relative;
+            .mountain-view-image {
+                width: 350px;
+                height: 400px;
+                border-radius: 10;
+                position: absolute;
+            }
+            .first-mountain-view-image {
+                top: 0;
+                left: 0;
+                z-index: -1;
+            }
+            .second-mountain-view-image-container {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                .second-mountain-view-image {
+                    position: relative;
+                    z-index: 2;
+                }
+                .play-button {
+                    width: 50px;
+                    height: 50px;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: rgba(255, 255, 255, 0.85);
+                    border-radius: 100px;
+                    position: absolute;
+                    z-index: 3;
+                    border: none;
+                    svg {
+                        width: 26px;
+                        height: 26px;
+                        fill: #000000;
+                        transform: translate(3px, 2px);
+                    }
+                }
+            }
+        }
+
+        .tour-info {
+            width: 580px;
+            height: 398px;
+            margin: 64px;
+            .title-up-destription {
+                margin-bottom: 8px;
+            }
+            h1,
+            h2,
+            span {
+                margin: 0;
+            }
+            .title-destription {
+                display: block;
+                margin-top: 40px;
+                font-weight: 400;
+                line-height: 150%;
+            }
+        }
+        .tour-program-btn {
+            width: 213px;
+            background-color: var(--secondary-color);
+            line-height: 20px;
+            border: none;
+            font-family: 'Nunito Sans', sans-serif;
+            margin-top: 40px;
+        }
+    }
+}
+
+.background-program-info {
+    width: 100%;
+    height: 771px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f5f4;
+    h1,
+    h2 {
+        margin: 0;
+    }
+    gap: 90px;
+    .best-program-info {
+        width: 580px;
+        height: 591px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        .title-program-info {
+            display: flex;
+            flex-direction: column;
+            height: 66px;
+            gap: 8px;
+        }
+        .title-description {
+            display: inline-block;
+        }
+        @for $i from 1 through 3 {
+            .content-box:nth-child(#{$i}) {
+                transition-delay: #{$i * 0.05}s;
+            }
+        }
+        .content-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            background-color: #ffffff;
+            transition: all 0.3s ease-in-out;
+
+            .text-content {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            &:hover {
+                transform: translateY(-5px);
+                background-color: #f9f9f9;
+                border-color: #2e7d32;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        .program-price-btn {
+            width: 236px;
+            background-color: var(--secondary-color);
+            line-height: 20px;
+            border: none;
+            font-family: 'Nunito Sans', sans-serif;
+            margin-top: 40px;
+            white-space: nowrap;
+        }
+    }
+    .tour-program-image {
+        max-width: 510px;
+        max-height: 510px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        .tour-image {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            transition:
+                transform 0.4s ease,
+                filter 0.4s ease;
+            &:hover {
+                transform: scale(1.03);
+                filter: brightness(1.05);
+            }
+        }
+        .tour-image-1 {
+            border-radius: 0 50px 0 50px;
+        }
+        .tour-image-2 {
+            border-radius: 50px 0 50px 0;
+        }
+        .tour-image-3 {
+            border-radius: 50px 0 50px 0;
+        }
+        .tour-image-4 {
+            border-radius: 0 50px 0 50px;
+        }
+    }
 }
